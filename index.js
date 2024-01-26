@@ -60,7 +60,7 @@ async function run() {
             res.send(result);
         })
 
-        app.post('/events', async (req, res) => {
+        app.post('/participant-events', async (req, res) => {
             const participantEventInfo = req.body;
             const result = await participantEventCollection.insertOne(participantEventInfo);
             res.send(result);
