@@ -52,11 +52,21 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/participant-events', async (req, res) => {
+            const email = req.query.email;
+            const query = { participantsEmail: email }
+            console.log(query)
+            const result = await participantEventCollection.find(query).toArray();  
+            res.send(result);
+        })
+
         app.post('/events', async (req, res) => {
             const participantEventInfo = req.body;
             const result = await participantEventCollection.insertOne(participantEventInfo);
             res.send(result);
         })
+
+
 
 
     } finally {
