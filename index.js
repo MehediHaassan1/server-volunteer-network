@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 
 require('dotenv').config();
@@ -38,10 +38,24 @@ async function run() {
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
         const eventsCollection = client.db('volunteerNetwork').collection('events');
+        const participantEventCollection = client.db('volunteerNetwork').collection('participantEventCollection')
 
         app.get('/events', async (req, res) => {
             const cursor = await eventsCollection.find().toArray();
             res.send(cursor);
+        })
+
+        app.get('/events/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await eventsCollection.findOne(query);
+            res.send(result);
+        })
+
+        app.post('/events', async (req, res) => {
+            const participantEventInfo = req.body;
+            const result = await participantEventCollection.insertOne(participantEventInfo);
+            res.send(result);
         })
 
 
