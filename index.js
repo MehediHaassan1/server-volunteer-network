@@ -55,8 +55,7 @@ async function run() {
         app.get('/participant-events', async (req, res) => {
             const email = req.query.email;
             const query = { participantsEmail: email }
-            console.log(query)
-            const result = await participantEventCollection.find(query).toArray();  
+            const result = await participantEventCollection.find(query).toArray();
             res.send(result);
         })
 
@@ -64,6 +63,13 @@ async function run() {
             const participantEventInfo = req.body;
             const result = await participantEventCollection.insertOne(participantEventInfo);
             res.send(result);
+        })
+
+        app.delete('/participant-events/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await participantEventCollection.deleteOne(query);
+            res.send(result)
         })
 
 
