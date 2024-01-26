@@ -37,7 +37,12 @@ async function run() {
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
+        const eventsCollection = client.db('volunteerNetwork').collection('events');
 
+        app.get('/events', async (req, res) => {
+            const cursor = await eventsCollection.find().toArray();
+            res.send(cursor);
+        })
 
 
     } finally {
